@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Heading</h1>
+    <h2>Sub-heading</h2>
+    <ol>
+        <li>fruits <ul>
+            <li>apple</li>
+            <li>banana</li>
+        </ul></li>
+        <li>vegetables <ul>
+            <li>carrot</li>
+            <li>broccoli</li>
+        </ul></li>
+    </ol>
+    <p>Paragraphs are separated by a blank line.</p>
+    <p>Text attributes <em>italic</em>, <strong>bold</strong>, <code>monospace</code>.</p>
+    <p>Horizontal rule:</p>
+    <hr />
+    <p>Two spaces at the end of a line<br />produce a line break.</p>
+</body>
+</html>

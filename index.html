@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mini browser</title>
+    <script defer type="module">
+        import { markdownParser as Markdown } from "./markdown_parser.js";
+        import { htmlParser as HTML } from "./html_parser.js";
+
+        const languages = { HTML, Markdown };
+
+        const textarea = document.querySelector('textarea');
+        const select = document.querySelector('select');
+        const main = document.querySelector('main');
+
+        textarea.value = sessionStorage.getItem('code') ?? '';
+
+        (select.onchange = textarea.oninput = () => {
+            console.clear();
+            const code = textarea.value;
+            sessionStorage.setItem('code', code);
+            const result = languages[select.value](code);
+            console.dir(result);
+            console.dir(main.innerHTML = result.join(''));
+        })();
+    </script>
+</head>
+
+<body>
+    <div>
+        <select>
+            <option>HTML</option>
+            <option>Markdown</option>
+        </select>
+    </div>
+    <textarea rows="30" cols="50" spellcheck="false" autocomplete="off"></textarea>
+    <main></main>
+</body>
+
+</html>

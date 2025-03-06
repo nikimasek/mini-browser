@@ -1,0 +1,22 @@
+# Heading
+
+## Sub-heading
+
+- fruits
+  - apple
+  - banana
+- vegetables
+  - carrot
+  - broccoli
+
+Paragraphs are separated 
+by a blank line.
+
+Text attributes _italic_, **b_ol_d**, `monospace`.
+
+Horizontal rule:
+
+---
+
+Two spaces at the end of a line  
+produce a line break.
