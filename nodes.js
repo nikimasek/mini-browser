@@ -1,11 +1,6 @@
-function propsToString(props) {
-    return Object.entries(props).map(x => ` ${x[0]}="${x[1]}"`).join('');
-}
-
 export class Node {
-    constructor(tag, props = {}, ...items) {
+    constructor(tag, _props, ...items) {
         this.tag = tag;
-        this.props = props;
         this.length = 0;
         this.add(items)
     }
@@ -15,12 +10,12 @@ export class Node {
         }
     }
     toString() {
-        return `<${this.tag}${propsToString(this.props)}>${Array.from(this).join('')}</${this.tag}>`;
+        return `<${this.tag}>${Array.from(this).join('')}</${this.tag}>`;
     }
 }
 export class VoidNode extends Node {
     toString() {
-        return `<${this.tag}${propsToString(this.props)}/>`;
+        return `<${this.tag}/>`;
     }
     static isVoid = true;
 }
@@ -32,5 +27,15 @@ export class HiddenNode extends Node {
 export class DocumentNode extends Node {
     toString() {
         return Array.from(this).join('');
+    }
+}
+
+export class LinkNode extends Node {
+    constructor(tag, props, ...items) {
+        super(tag, props, ...items);
+        this.href = props?.href ?? '';
+    }
+    toString() {
+        return `<${this.tag} href="${this.href}">${Array.from(this).join('')}</${this.tag}>`;
     }
 }

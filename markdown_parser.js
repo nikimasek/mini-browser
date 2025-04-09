@@ -1,13 +1,14 @@
-import { Node, VoidNode } from './nodes.js';
+import { LinkNode, Node, VoidNode } from './nodes.js';
 
 function text(value) {
     if (value == '') return [];
     const result = [];
     let i = 0;
-    for (const match of value.matchAll(/(?<g>[_*]{1,3}|`|~~)(.*?)\k<g>|( {2}$)/g)) {
+    for (const match of value.matchAll(/\[([^\]]+)\]\(([^)]+)\)|(?<g>[_*]{1,3}|`|~~)(.*?)\k<g>|( {2}$)/g)) {
         result.push(text(value.substring(i, match.index)));
-        const [, style, body, br] = match;
+        const [, label, href, style, body, br] = match;
         switch (true) {
+            case Boolean(label): result.push(new LinkNode('a', { href }, label)); break;
             case Boolean(br): result.push(new VoidNode('br')); break;
             case style == '`': result.push(new Node('code', {}, body)); break;
             case style.length == 1: result.push(new Node('i', {}, text(body))); break;

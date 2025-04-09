@@ -1,4 +1,4 @@
-import { Node, VoidNode, DocumentNode, HiddenNode } from "./nodes.js";
+import { Node, VoidNode, DocumentNode, HiddenNode, LinkNode } from "./nodes.js";
 
 const charset = Object.setPrototypeOf({
     nbsp: '\xA0',
@@ -29,7 +29,8 @@ const tags = Object.setPrototypeOf({
     'code': Node,
     'br': VoidNode,
     'hr': VoidNode,
-    'link': VoidNode
+    'link': VoidNode,
+    'a': LinkNode
 }, null);
 
 export function htmlParser(data) {
@@ -41,11 +42,18 @@ export function htmlParser(data) {
             case Boolean(tag) && tag[0] == '/' && (tag.substring(1) in tags):
                 close();
                 break;
-            case Boolean(tag) && tag[0] != '!' && (tag in tags):
+            case Boolean(tag) && tag[0] != '!' && (tag in tags): {
                 const element = tags[tag];
-                stack.push(new element(tag));
+                stack.push(
+                    new element(tag,
+                        args && Array.from(args?.matchAll(/([a-z]+)(?:="([^"]*)")?/gi))
+                            .reduce((props, [, key, value]) => {
+                                props[key] = value ?? '';
+                                return props;
+                            }, {})));
                 if (args?.endsWith('/') || element.isVoid) close();
                 break;
+            }
             case text !== undefined:
                 stack.at(-1).add(text.replace(/&([a-z]+);/g, (_, x) => charset[x] ?? '##'));
                 break;
